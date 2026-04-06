@@ -1,12 +1,14 @@
 const express = require("express");
 
 const { recordMiddleware } = require('../../middlewares/index');
+const { userMiddleware } = require('../../middlewares/index');
 const recordController = require('../../controllers/recordController');
+const userController = require('../../controllers/userController');
 
 
 const router = express.Router();
 
-
+//Financial Record routes
 router.post(
   '/record',
   recordMiddleware.validRequest,
@@ -27,6 +29,26 @@ router.patch(
 router.delete(
   '/record/:id',
   recordController.deleteRecord
+);
+
+
+//User routes
+
+router.post('/user',
+  userMiddleware.validRequest,
+  userController.create
+);
+
+router.get('/user/:id',
+  userController.getUser
+);
+
+router.patch('/user/:id',
+  userController.update
+);
+
+router.delete('/user/:id',
+  userController.deleteUser
 );
 
 module.exports = router;

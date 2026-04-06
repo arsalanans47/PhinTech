@@ -1,3 +1,4 @@
 module.exports ={
-  recordMiddleware: require('./recordMiddleware')
+  recordMiddleware: require('./recordMiddleware'),
+  userMiddleware: require('./userMiddleware')
 }
