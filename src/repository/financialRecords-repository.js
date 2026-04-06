@@ -69,6 +69,72 @@ class FinancialRecordsRepository {
     }
   }
 
+  async getTotalIncome() {
+    try {
+      const totalIncome = await financial_records.sum('amount', {
+        where: {
+          type: 'Income'
+        }
+      });
+      return Number(totalIncome) || 0;
+    } catch (error) {
+      console.error("something went wrong in the repository layer");
+      throw error;
+    }
+  }
+
+  async getTotalExpense() {
+    try {
+      const totalExpense = await financial_records.sum('amount', {
+        where: {
+          type: 'Expense'
+        }
+      });
+      return Number(totalExpense) || 0;
+    } catch (error) {
+      console.error("something went wrong in the repository layer");
+      throw error;
+    }
+  }
+
+  async getNetBalance() {
+    try {
+      const totalIncome = await this.getTotalIncome();
+      const totalExpense = await this.getTotalExpense();
+      return Number(totalIncome) - Number(totalExpense);
+    } catch (error) {
+      console.error("something went wrong in the repository layer");
+      throw error;
+    }
+  }
+
+  async getCategoryTotal(category) {
+    try {
+      const total = await financial_records.sum('amount', {
+        where: {
+          category
+        }
+      });
+      return Number(total) || 0;
+    } catch (error) {
+      console.error("something went wrong in the repository layer");
+      throw error;
+    }
+  }
+
+  async getRecentActivity(limit = 3) {
+    try {
+      const records = await financial_records.findAll({
+        order: [['updatedAt', 'DESC']],
+        limit
+      });
+      return records;
+    } catch (error) {
+      console.error("something went wrong in the repository layer");
+      throw error;
+    }
+  }
+
 
   async updateRecord(recordId, data){
     try {

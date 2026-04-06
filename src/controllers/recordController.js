@@ -72,6 +72,106 @@ const getAll = async (req, res) => {
   }
 }
 
+const getTotalIncome = async (req, res) => {
+  try {
+    const totalIncome = await recordService.getTotalIncome();
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      data: totalIncome,
+      message: 'Total income fetched successfully',
+      err: {}
+    });
+  } catch (error) {
+    console.log("something went wrong in controller layer");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      data: {},
+      message: 'Failed to fetch total income',
+      err: error
+    });
+  }
+}
+
+const getTotalExpense = async (req, res) => {
+  try {
+    const totalExpense = await recordService.getTotalExpense();
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      data: totalExpense,
+      message: 'Total expense fetched successfully',
+      err: {}
+    });
+  } catch (error) {
+    console.log("something went wrong in controller layer");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      data: {},
+      message: 'Failed to fetch total expense',
+      err: error
+    });
+  }
+}
+
+const getNetBalance = async (req, res) => {
+  try {
+    const netBalance = await recordService.getNetBalance();
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      data: netBalance,
+      message: 'Net balance fetched successfully',
+      err: {}
+    });
+  } catch (error) {
+    console.log("something went wrong in controller layer");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      data: {},
+      message: 'Failed to fetch net balance',
+      err: error
+    });
+  }
+}
+
+const getCategoryTotal = async (req, res) => {
+  try {
+    const result = await recordService.getCategoryTotal(req.body?.category);
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      data: result,
+      message: 'Category total fetched successfully',
+      err: {}
+    });
+  } catch (error) {
+    console.log("something went wrong in controller layer");
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      success: false,
+      data: {},
+      message: 'Failed to fetch category total',
+      err: error.message || error
+    });
+  }
+}
+
+const getRecentActivity = async (req, res) => {
+  try {
+    const records = await recordService.getRecentActivity();
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      data: records,
+      message: 'Recent activity fetched successfully',
+      err: {}
+    });
+  } catch (error) {
+    console.log("something went wrong in controller layer");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      data: {},
+      message: 'Failed to fetch recent activity',
+      err: error
+    });
+  }
+}
+
 
 const updateRecord = async (req, res) => {
   try {
@@ -117,6 +217,11 @@ module.exports = {
   create,
   getRecord,
   getAll,
+  getTotalIncome,
+  getTotalExpense,
+  getNetBalance,
+  getCategoryTotal,
+  getRecentActivity,
   updateRecord,
   deleteRecord
 }

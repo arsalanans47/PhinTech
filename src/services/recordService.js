@@ -5,6 +5,8 @@ class RecordService {
     this.financialRepo = new FinancialRecordsRepository();
   }
 
+  static allowedCategories = ['Earning', 'Food', 'Transport', 'Housing', 'miscellaneous'];
+
   async createRecord(recordData){
     try {
       // Business logic: verify the creator exists and is an Admin
@@ -48,6 +50,68 @@ class RecordService {
     try {
       const records = await this.financialRepo.getAllRecords(Data || {});
       return records;
+    } catch (error) {
+      console.log("something went wrong in service layer");
+      throw error;
+    }
+  }
+
+  async getTotalIncome(){
+    try {
+      const totalIncome = await this.financialRepo.getTotalIncome();
+      return totalIncome;
+    } catch (error) {
+      console.log("something went wrong in service layer");
+      throw error;
+    }
+  }
+
+  async getTotalExpense(){
+    try {
+      const totalExpense = await this.financialRepo.getTotalExpense();
+      return totalExpense;
+    } catch (error) {
+      console.log("something went wrong in service layer");
+      throw error;
+    }
+  }
+
+  async getNetBalance(){
+    try {
+      const netBalance = await this.financialRepo.getNetBalance();
+      return netBalance;
+    } catch (error) {
+      console.log("something went wrong in service layer");
+      throw error;
+    }
+  }
+
+  async getCategoryTotal(category){
+    try {
+      if (!category) {
+        throw new Error('category is required');
+      }
+
+      const normalizedCategory = String(category).trim();
+      if (!RecordService.allowedCategories.includes(normalizedCategory)) {
+        throw new Error('Invalid category. Allowed categories: Earning, Food, Transport, Housing, miscellaneous');
+      }
+
+      const total = await this.financialRepo.getCategoryTotal(normalizedCategory);
+      return {
+        category: normalizedCategory,
+        total
+      };
+    } catch (error) {
+      console.log("something went wrong in service layer");
+      throw error;
+    }
+  }
+
+  async getRecentActivity(){
+    try {
+      const recentRecords = await this.financialRepo.getRecentActivity(3);
+      return recentRecords;
     } catch (error) {
       console.log("something went wrong in service layer");
       throw error;

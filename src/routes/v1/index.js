@@ -15,6 +15,31 @@ router.post(
   recordController.create
 );
 
+router.get('/record/total-income',
+  recordMiddleware.validateAnalyticsAccess,
+  recordController.getTotalIncome
+);
+
+router.get('/record/total-expense',
+  recordMiddleware.validateAnalyticsAccess,
+  recordController.getTotalExpense
+);
+
+router.get('/record/net-balance',
+  recordMiddleware.validateAnalyticsAccess,
+  recordController.getNetBalance
+);
+
+router.get('/record/category-total',
+  recordMiddleware.validateAnalyticsAccess,
+  recordController.getCategoryTotal
+);
+
+router.get('/record/recent-activity',
+  recordMiddleware.validateAnalyticsAccess,
+  recordController.getRecentActivity
+);
+
 router.get(
   '/record/:id',
   recordController.getRecord
