@@ -62,8 +62,7 @@ If your server runs on port `3000`, the full base URL is:
   - `/record/category-total`
   - `/record/recent-activity`
 - `Viewer` role is denied access.
-- Pass requester id as `userId` (recommended in query for GET requests), for example:
-  - `/record/total-income?userId=1`
+- Pass requester id as `userId` in `req.body`.
 
 ### 1) Create Record
 - Method: `POST`
@@ -155,7 +154,10 @@ Response: `200 OK`
 - Path: `/record/total-income`
 - Returns the sum of all records with `type = "Income"`.
 - Access: `Admin`, `Analyst` only (`Viewer` forbidden)
-- Required: `userId` in query or body
+- Required: `userId` in request body
+
+Example:
+`GET /record/total-income` with body `{ "userId": 1 }`
 
 Response data example:
 ```json
@@ -169,7 +171,10 @@ Response data example:
 - Path: `/record/total-expense`
 - Returns the sum of all records with `type = "Expense"`.
 - Access: `Admin`, `Analyst` only (`Viewer` forbidden)
-- Required: `userId` in query or body
+- Required: `userId` in request body
+
+Example:
+`GET /record/total-expense` with body `{ "userId": 1 }`
 
 Response data example:
 ```json
@@ -183,7 +188,10 @@ Response data example:
 - Path: `/record/net-balance`
 - Formula: `totalIncome - totalExpense`
 - Access: `Admin`, `Analyst` only (`Viewer` forbidden)
-- Required: `userId` in query or body
+- Required: `userId` in request body
+
+Example:
+`GET /record/net-balance` with body `{ "userId": 1 }`
 
 Response data example:
 ```json
@@ -197,7 +205,7 @@ Response data example:
 - Path: `/record/category-total`
 - Current implementation reads `category` from request body.
 - Access: `Admin`, `Analyst` only (`Viewer` forbidden)
-- Required for access: `userId` in query or body
+- Required for access: `userId` in request body
 - Allowed categories:
   - `Earning`
   - `Food`
@@ -208,9 +216,13 @@ Response data example:
 Request body:
 ```json
 {
+  "userId": 1,
   "category": "Food"
 }
 ```
+
+Example path:
+`GET /record/category-total`
 
 Response data example:
 ```json
@@ -237,7 +249,10 @@ Validation error example (`400 Bad Request`):
 - Path: `/record/recent-activity`
 - Returns latest 3 rows ordered by `updatedAt DESC`.
 - Access: `Admin`, `Analyst` only (`Viewer` forbidden)
-- Required: `userId` in query or body
+- Required: `userId` in request body
+
+Example:
+`GET /record/recent-activity` with body `{ "userId": 1 }`
 
 Response: `200 OK`
 
@@ -324,6 +339,8 @@ Response: `200 OK`
 - `200 OK`: Request succeeded.
 - `201 Created`: Resource created.
 - `400 Bad Request`: Validation/domain error (for example, invalid category).
+- `403 Forbidden`: Role is not allowed (for example, Viewer on analytics routes).
+- `404 Not Found`: Resource/user not found.
 - `500 Internal Server Error`: Unhandled server/service/repository errors.
 
 ## Example cURL Commands
@@ -337,19 +354,23 @@ curl -X POST http://localhost:3000/api/v1/record \
 
 Get total income:
 ```bash
-curl "http://localhost:3000/api/v1/record/total-income?userId=1"
+curl -X GET http://localhost:3000/api/v1/record/total-income \
+  -H "Content-Type: application/json" \
+  -d '{"userId":1}'
 ```
 
 Get recent activity:
 ```bash
-curl "http://localhost:3000/api/v1/record/recent-activity?userId=1"
+curl -X GET http://localhost:3000/api/v1/record/recent-activity \
+  -H "Content-Type: application/json" \
+  -d '{"userId":1}'
 ```
 
 Get category total:
 ```bash
-curl -X GET "http://localhost:3000/api/v1/record/category-total?userId=1" \
+curl -X GET http://localhost:3000/api/v1/record/category-total \
   -H "Content-Type: application/json" \
-  -d '{"category":"Food"}'
+  -d '{"userId":1,"category":"Food"}'
 ```
 
 ## Implementation Notes

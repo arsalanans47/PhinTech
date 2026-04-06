@@ -200,11 +200,7 @@ Analytics endpoints require requester id (`userId`) and enforce role checks:
 
 - Allowed roles: `Admin`, `Analyst`
 - Denied role: `Viewer`
-- Recommended usage for GET analytics routes:
-  - `/api/v1/record/total-income?userId=1`
-  - `/api/v1/record/total-expense?userId=1`
-  - `/api/v1/record/net-balance?userId=1`
-  - `/api/v1/record/recent-activity?userId=1`
+- Current implementation expects `userId` in request body for analytics routes.
 
 ## Request Flow Architecture
 
