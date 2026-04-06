@@ -147,10 +147,16 @@ CREATE DATABASE phintech_db_dev;
 
 ## Run Migrations
 
+Run all Sequelize CLI commands from inside the `src` folder.
+
+```bash
+cd src
+```
+
 Run Sequelize migrations to create tables:
 
 ```bash
-npx sequelize-cli db:migrate --config src/config/config.json --migrations-path src/migrations
+npx sequelize-cli db:migrate --config config/config.json --migrations-path migrations
 ```
 
 This creates:
@@ -163,7 +169,7 @@ This creates:
 Run seeders to insert sample data:
 
 ```bash
-npx sequelize-cli db:seed:all --config src/config/config.json --seeders-path src/seeders
+npx sequelize-cli db:seed:all --config config/config.json --seeders-path seeders
 ```
 
 This seeds:
