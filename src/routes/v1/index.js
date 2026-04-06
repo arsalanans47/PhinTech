@@ -20,6 +20,9 @@ router.get(
   recordController.getRecord
 );
 
+router.get('/record',
+  recordController.getAll
+);
 
 router.patch(
   '/record/:id',

@@ -22,7 +22,7 @@ const create = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       data: {},
       message: 'Failed to create record',
@@ -43,10 +43,30 @@ const getRecord = async (req, res) => {
     });
   } catch (error) {
     console.log("something went wrong in controller layer");
-    return res.status(500).json({
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       data: {},
       message: 'Failed to get record',
+      err: error
+    });
+  }
+}
+
+const getAll = async (req, res) => {
+  try {
+    const records = await recordService.getAllRecords(req.body || {});
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      data: records,
+      message: 'Records fetched successfully',
+      err: {}
+    });
+  } catch (error) {
+    console.log("something went wrong in controller layer");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      data: {},
+      message: 'Failed to get records',
       err: error
     });
   }
@@ -64,7 +84,7 @@ const updateRecord = async (req, res) => {
     });
   } catch (error) {
     console.log("something went wrong in contoller layer");
-    return res.status(500).json({
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       data: {},
       message: 'Failed to update record',
@@ -96,6 +116,7 @@ const deleteRecord = async (req, res) => {
 module.exports = {
   create,
   getRecord,
+  getAll,
   updateRecord,
   deleteRecord
 }

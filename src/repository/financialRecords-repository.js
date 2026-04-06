@@ -3,11 +3,15 @@ const { financial_records, user } = require('../models/index');
 
 class FinancialRecordsRepository {
 
-  createFilter(data) {
+  #createFilter(data ) {
     let filter = {};
 
-    if (data.date) {
-      filter.record_date = data.date;
+    if (!data || Object.keys(data).length === 0) {
+      return filter;
+    }
+
+    if (data.record_date) {
+      filter.record_date = data.record_date;
     }
 
     if (data.category) {
@@ -54,8 +58,9 @@ class FinancialRecordsRepository {
 
   async getAllRecords(filter){
     try {
+      const filterObject = this.#createFilter(filter);
       const records = await financial_records.findAll({
-        where: filter
+        where: filterObject
       });
       return records;
     } catch (error) {

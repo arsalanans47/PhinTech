@@ -33,6 +33,27 @@ class RecordService {
     }
   }
 
+
+  // async getAllRecords(){
+  //   try {
+  //     const records = await this.financialRepo.getAllRecords(Data);
+  //     return records;
+  //   } catch (error) {
+  //     console.log("something went wrong in service layer");
+  //     throw error;
+  //   }
+  // }
+
+  async getAllRecords(Data){
+    try {
+      const records = await this.financialRepo.getAllRecords(Data || {});
+      return records;
+    } catch (error) {
+      console.log("something went wrong in service layer");
+      throw error;
+    }
+  }
+
   async updateRecord(recordId, data){
     try {
       // Business logic: userId is required and must be an Admin
