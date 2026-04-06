@@ -35,11 +35,11 @@ class RecordService {
 
   async updateRecord(recordId, data){
     try {
-      // Business logic: created_by is required and must be an Admin
-      if(!data.created_by){
-        throw new Error("created_by is required to update a record");
+      // Business logic: userId is required and must be an Admin
+      if(!data.userId){
+        throw new Error("user id is required to update a record");
       }
-      const creator = await this.financialRepo.getUserById(data.created_by);
+      const creator = await this.financialRepo.getUserById(data.userId);
       if(!creator){
         throw new Error("User not found");
       }
@@ -50,8 +50,6 @@ class RecordService {
       if(!record){
         throw new Error("Record not found");
       }
-      // Remove created_by so it doesn't get updated in the DB
-      delete data.created_by;
       const response = await this.financialRepo.updateRecord(recordId, data);
       return response;
     } catch (error) {
@@ -62,11 +60,11 @@ class RecordService {
 
   async deleteRecord(recordId, data){
     try {
-      // Business logic: created_by is required and must be an Admin
-      if(!data.created_by){
-        throw new Error("created_by is required to delete a record");
+      // Business logic: userId is required and must be an Admin
+      if(!data.userId){
+        throw new Error("userId is required to delete a record");
       }
-      const creator = await this.financialRepo.getUserById(data.created_by);
+      const creator = await this.financialRepo.getUserById(data.userId);
       if(!creator){
         throw new Error("User not found");
       }

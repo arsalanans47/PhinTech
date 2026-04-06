@@ -36,10 +36,6 @@ class FinancialRecordsRepository {
 
   async updateRecord(recordId, data){
     try {
-      // const record = await financial_records.findByPk(recordId);
-      // if(!record){
-      //   throw new Error("Record not found");
-      // }
       await financial_records.update(data,{
         where: {
           id: recordId
