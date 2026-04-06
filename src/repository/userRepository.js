@@ -24,6 +24,16 @@ class userRepository {
     }
   }
 
+  async getAllUsers() {
+    try {
+      const users = await user.findAll();
+      return users;
+    } catch (error) {
+      console.error("Error in userRepository getAllUsers: ", error);
+      throw error;
+    }
+  }
+
   async updateUser(userId, data){
     try {
       await user.update(data, {

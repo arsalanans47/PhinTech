@@ -51,6 +51,26 @@ const getUser = async (req, res) => {
   }
 }
 
+const getAll = async (req, res) => {
+  try {
+    const response = await userservice.getAllUsers(req.body.id);
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      data: response,
+      message: 'Users retrieved successfully',
+      err: {}
+    })
+  } catch (error) {
+    console.log("Error in userController getAll: ", error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      data: {},
+      message: 'Failed to get users',
+      err: error
+    })
+  }
+}
+
 
 const update = async (req, res) => {
   try {
@@ -96,6 +116,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
   create,
   getUser,
+  getAll,
   update,
   deleteUser
 }

@@ -38,6 +38,24 @@ class userService {
   }
 
 
+  async getAllUsers(adminId){
+    try {
+      const user = await this.userRepo.getUserById(adminId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      if(user.role !== 'Admin'){
+        throw new Error("Only admin can view all users");
+      }
+      const users = await this.userRepo.getAllUsers();
+      return users;
+    } catch (error) {
+      console.log("error in userService getAllUsers: ", error);
+      throw error;
+    }
+  }
+
+
   async updateUsers(userId, data){
     try {
       const user = await this.userRepo.getUserById(data.id);

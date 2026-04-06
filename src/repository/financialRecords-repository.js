@@ -3,6 +3,24 @@ const { financial_records, user } = require('../models/index');
 
 class FinancialRecordsRepository {
 
+  createFilter(data) {
+    let filter = {};
+
+    if (data.date) {
+      filter.record_date = data.date;
+    }
+
+    if (data.category) {
+      filter.category = data.category;
+    }
+
+    if (data.type) {
+      filter.type = data.type;
+    }
+
+    return filter;
+  }
+
   async createRecord(data) {
     try {
       const record = await financial_records.create(data);
@@ -27,6 +45,19 @@ class FinancialRecordsRepository {
     try {
       const record = await financial_records.findByPk(recordId);
       return record;
+    } catch (error) {
+      console.error("something went wrong in the repository layer");
+      throw error;
+    }
+  }
+
+
+  async getAllRecords(filter){
+    try {
+      const records = await financial_records.findAll({
+        where: filter
+      });
+      return records;
     } catch (error) {
       console.error("something went wrong in the repository layer");
       throw error;

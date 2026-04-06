@@ -43,6 +43,10 @@ router.get('/user/:id',
   userController.getUser
 );
 
+router.get('/users',
+  userController.getAll
+);
+
 router.patch('/user/:id',
   userController.update
 );
