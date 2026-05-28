@@ -282,4 +282,9 @@ Many write operations require an admin identifier in payload as per current serv
 
 ## License
 
-ISC
+This project is licensed under the MIT License.
+
+Repository Owner: Arsalan Ayub
+LinkedIn: https://www.linkedin.com/in/arsalan47/
+Email: [arsalanans8377@gmail.com](mailto:arsalanans8377@gmail.com)
+
